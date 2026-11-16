@@ -435,7 +435,20 @@
     update();updateSaveLabels();
     document.querySelector('.workspace').classList.remove('preview-visible');$('preview-toggle').textContent='Vista previa';void loadBootstrap();window.scrollTo({top:0,behavior:'smooth'});
   }
-  document.querySelectorAll('.nav-tab[data-view]').forEach(button=>button.addEventListener('click',()=>setView(button.dataset.view)));
+  document.querySelectorAll('.nav-tab[data-view]').forEach(button=>{
+    button.addEventListener('click',()=>{
+      const next=button.dataset.view;
+      setView(next);
+      if(next==='editor')window.scrollTo({top:0,behavior:'auto'});
+    });
+  });
+
+  const appHeader=document.querySelector('.app-header');
+  if(appHeader&&typeof ResizeObserver==='function'){
+    const measureHeader=()=>document.documentElement.style.setProperty('--app-header-height',Math.ceil(appHeader.getBoundingClientRect().height)+'px');
+    measureHeader();
+    new ResizeObserver(measureHeader).observe(appHeader);
+  }
   document.querySelectorAll('[data-filter]').forEach(button=>button.addEventListener('click',()=>{filter=button.dataset.filter;document.querySelectorAll('[data-filter]').forEach(item=>item.classList.toggle('active',item===button));void loadArchive();}));
   $('new-document').addEventListener('click',()=>resetDocument());$('leave-edit').addEventListener('click',()=>resetDocument());
   $('use-suggestion').addEventListener('click',()=>{if(suggestions[type]){$('number').value=suggestions[type].next;update();}});

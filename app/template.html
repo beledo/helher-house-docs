@@ -10,20 +10,44 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23143463'/%3E%3Cpath d='M9 8h4v7h6V8h4v16h-4v-6h-6v6H9z' fill='white'/%3E%3Cpath d='M25 5h3v5h-3z' fill='%23ed4339'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="assets/styles.css">
   <link rel="stylesheet" href="assets/access.css">
+  <link rel="stylesheet" href="assets/responsive.css">
   <script src="assets/pdf-lib.min.js" defer></script>
   <script src="assets/fontkit.min.js" defer></script>
   <script src="assets/document.js" defer></script>
-  <script src="assets/app.js" defer></script>
+  <script src="assets/app.js?v=2" defer></script>
 </head>
 <body>
-  <header class="topbar">
-    <a class="brand" href="./" aria-label="Helher House, inicio"><img src="assets/logo.png" alt="Helher House · Construcciones · Real Estate"><span>HELHER HOUSE<small>Documentos de empresa</small></span></a>
-    <div class="top-actions"><button type="button" class="button secondary" id="preview-toggle">Vista previa</button><button type="button" class="button secondary" id="download-top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M5 16v5h14v-5"/></svg><span class="desktop-label">Descargar </span>PDF</button><button type="button" class="button primary" id="save-top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h13l3 3v15H3V3zM7 3v6h10V3M7 21v-8h10v8"/></svg><span id="save-top-label">Guardar</span></button></div>
-  </header>
-  <nav class="workspace-nav" aria-label="Secciones"><div class="nav-tabs"><button type="button" class="nav-tab active" data-view="editor" aria-current="page">Documento</button><button type="button" class="nav-tab" data-view="history">Historial <span id="history-count" class="count-badge">0</span></button><button type="button" class="nav-tab" data-view="clients">Clientes</button><button type="button" class="nav-tab" data-view="reports">Trimestres</button><button type="button" class="nav-tab" data-view="trash">Papelera <span id="trash-count" class="count-badge">0</span></button></div><button type="button" class="new-document" id="new-document"><span aria-hidden="true">+</span> Nuevo</button></nav>
-  <div class="account-nav"><a href="cuenta.php">Cambiar contraseña</a><form action="salir.php" method="post"><input type="hidden" name="csrf" value="{{CSRF}}"><button type="submit">Cerrar sesión</button></form></div>
+  <div class="app-header">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="Helher House, inicio"><img src="assets/logo.png" alt="Helher House · Construcciones · Real Estate"><span>HELHER HOUSE<small>Documentos de empresa</small></span></a>
+      <div class="top-actions"><button type="button" class="button secondary" id="preview-toggle">Vista previa</button><button type="button" class="button secondary" id="download-top" aria-label="Descargar PDF"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M5 16v5h14v-5"/></svg><span class="desktop-label">Descargar </span>PDF</button><button type="button" class="button primary" id="save-top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h13l3 3v15H3V3zM7 3v6h10V3M7 21v-8h10v8"/></svg><span id="save-top-label">Guardar</span></button></div>
+    </header>
+    <nav class="workspace-nav" aria-label="Secciones">
+      <div class="nav-tabs">
+        <button type="button" class="nav-tab active" data-view="editor" aria-controls="document-page" aria-current="page">
+          <span class="nav-label">Documento</span>
+        </button>
+        <button type="button" class="nav-tab" data-view="history" aria-controls="archive-page">
+          <span class="nav-label">Historial</span> <span id="history-count" class="count-badge">0</span>
+        </button>
+        <button type="button" class="nav-tab" data-view="clients" aria-controls="clients-page">
+          <span class="nav-label">Clientes</span>
+        </button>
+        <button type="button" class="nav-tab" data-view="reports" aria-controls="reports-page">
+          <span class="nav-label">Trimestres</span>
+        </button>
+        <button type="button" class="nav-tab" data-view="trash" aria-controls="archive-page">
+          <span class="nav-label">Papelera</span> <span id="trash-count" class="count-badge">0</span>
+        </button>
+        <button type="button" class="new-document" id="new-document">
+          <span class="new-icon" aria-hidden="true">+</span> <span class="nav-label">Nuevo</span>
+        </button>
+      </div>
+    </nav>
+    <div class="account-nav"><a href="cuenta.php">Cambiar contraseña</a><form action="salir.php" method="post"><input type="hidden" name="csrf" value="{{CSRF}}"><button type="submit">Cerrar sesión</button></form></div>
+  </div>
   <div class="connection-error" id="connection-error" role="alert" hidden><span id="connection-message"></span><button type="button" id="retry-connection">Volver a intentar</button></div>
-  <main class="workspace">
+  <main class="workspace" id="document-page">
     <section class="editor" aria-label="Editar documento">
       <div class="editor-heading"><div class="eyebrow">NUEVO DOCUMENTO</div><h1>De los datos al PDF.</h1><p>El formato de siempre, con las cuentas hechas.</p></div>
       <form id="document-form" novalidate>
